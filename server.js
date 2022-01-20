@@ -4,6 +4,8 @@ const noteData = require('./db/db.json');
 const fs = require('fs');
 
 const uuid = require('./helpers/uuid');
+// const { readAndAppend } = require('./helpers/fsUtils');
+const { json } = require('express/lib/response');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -31,7 +33,9 @@ app.post('/api/notes', (req, res) => {
             text,
             note_id: uuid()
         }
-
+         
+        noteData.push(newNote);
+        //   readAndAppend(stuff);
         fs.readFile('./db/db.json', 'utf8', (err, data) => {
             if (err) {
               console.error(err);
@@ -50,9 +54,10 @@ app.post('/api/notes', (req, res) => {
                   writeErr
                     ? console.error(writeErr)
                     : console.info('Successfully updated reviews!')
-              );
+              ); 
             }
-          });    
+          });   
+          
 
     const response = {
         status: 'success',
@@ -68,7 +73,6 @@ app.post('/api/notes', (req, res) => {
 });
 
 
-
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "/public/index.html"));
 });
@@ -77,3 +81,4 @@ app.get("*", function (req, res) {
 app.listen(PORT, function() {
         console.log(`App listening at http://localhost:${PORT}`);
 });
+
