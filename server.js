@@ -87,17 +87,18 @@ app.delete("/api/notes/:id", function (req, res) {
           break;
       }
       }
+      fs.writeFile(jsonFilePath, JSON.stringify(noteData, null, 2), function (err) {
+        if (err) {
+          return console.log(err);
+        } else {
+          console.log("Note was deleted");
+        }
+      });
+      res.json(noteData);
+    })
     });
   
-    fs.writeFile(jsonFilePath, JSON.stringify(noteData, null, 2), function (err) {
-      if (err) {
-        return console.log(err);
-      } else {
-        console.log("Note was deleted");
-      }
-    });
-    res.json(noteData);
-  });
+    
 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "/public/index.html"));
